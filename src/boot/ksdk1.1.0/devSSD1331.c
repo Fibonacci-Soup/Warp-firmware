@@ -160,6 +160,17 @@ devSSD1331init(void)
 	 *	out how to fill the entire screen with the brightest shade
 	 *	of green.
 	 */
+    writeCommand(kSSD1331CommandDRAWRECT);
+    writeCommand(0x00); // Column Address of Start
+    writeCommand(0x00); // Row Address of Start
+    writeCommand(0x5F); // Column Address of End
+    writeCommand(0x3F); // Row Address of End
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
+    writeCommand(0x00); // Color A of the line
+    writeCommand(0x00); // Color C of the fill area
+    writeCommand(0xFF); // Color B of the fill area
+    writeCommand(0x00); // Color A of the fill area
 
 
 
