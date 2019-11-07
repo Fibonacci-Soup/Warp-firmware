@@ -420,6 +420,33 @@ home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.s
 .PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.s
 
+home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.obj: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj
+
+.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.obj
+
+# target to build an object file
+home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj:
+	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj
+.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj
+
+home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.i: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i
+
+.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.i
+
+# target to preprocess a source file
+home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i:
+	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i
+.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i
+
+home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.s: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s
+
+.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.s
+
+# target to generate assembly for a file
+home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s:
+	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s
+.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s
+
 home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-boot.obj: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-boot.c.obj
 
 .PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-boot.obj
@@ -660,6 +687,9 @@ help:
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.obj"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.i"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.s"
+	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.obj"
+	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.i"
+	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devSSD1331.s"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-boot.obj"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-boot.i"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-boot.s"
