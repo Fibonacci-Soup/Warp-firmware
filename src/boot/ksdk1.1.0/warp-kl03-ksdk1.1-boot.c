@@ -1365,7 +1365,7 @@ main(void)
 							(uint8_t *)deviceMMA8451QState.i2cBuffer,
 							1,
 							gWarpI2cTimeoutMilliseconds);
-	SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n", 0x40);
+	//SEGGER_RTT_WriteString(0, "\r\t0x%02x --> ----\n", cmdBuf[0]);
 
 
 
