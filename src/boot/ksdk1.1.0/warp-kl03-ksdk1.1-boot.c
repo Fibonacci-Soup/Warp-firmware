@@ -1347,9 +1347,8 @@ main(void)
 
     // Measure Current
     SEGGER_RTT_WriteString(0, "\n\n\n\r Starting to measure current using INA219\n");
-    deviceINA219State->i2cAddress = 0x40;
+    deviceINA219State.i2cAddress = 0x40;
     uint8_t cmdBuf[1] = {0xFF};
-	i2c_status_t status;
 	i2c_device_t slave =
 	{
 		.address = deviceMMA8451QState.i2cAddress,
