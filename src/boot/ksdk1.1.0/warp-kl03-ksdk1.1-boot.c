@@ -1356,7 +1356,7 @@ main(void)
 	};
 
 	cmdBuf[0] = deviceMMA8451QState.i2cAddress;
-	SEGGER_RTT_WriteString(0, "\n\n\n\r Going to call I2C_DRV_MasterReceiveDataBlocking\n");
+	SEGGER_RTT_WriteString(0, "\n\n\n\r Going to call I2C Receive\n");
 	I2C_DRV_MasterReceiveDataBlocking(
 							0 /* I2C peripheral instance */,
 							&slave,
@@ -1365,7 +1365,7 @@ main(void)
 							(uint8_t *)deviceMMA8451QState.i2cBuffer,
 							1,
 							gWarpI2cTimeoutMilliseconds);
-	SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n", deviceMMA8451QState.i2cAddress);
+	SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n", cmdBuf);
 
 
 
