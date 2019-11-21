@@ -112,6 +112,8 @@ volatile WarpI2CDeviceState			deviceBMX055magState;
 volatile WarpI2CDeviceState			deviceMMA8451QState;
 #endif
 
+volatile WarpI2CDeviceState			deviceINA219State;
+
 #ifdef WARP_BUILD_ENABLE_DEVLPS25H
 volatile WarpI2CDeviceState			deviceLPS25HState;
 #endif
@@ -1340,9 +1342,37 @@ main(void)
 	 */
 #endif
 
+    // Turn on OLED
     devSSD1331init();
 
+    // Measure Current
+    SEGGER_RTT_WriteString(0, "\n\n\n\r Starting to measure current using INA219\n");
+    deviceINA219State->i2cAddress = 0x40;
+    uint8_t cmdBuf[1] = {0xFF};
+	i2c_status_t status;
+	i2c_device_t slave =
+	{
+		.address = deviceMMA8451QState.i2cAddress,
+		.baudRate_kbps = gWarpI2cBaudRateKbps
+	};
 
+	while (1)
+	{
+		cmdBuf[0] = deviceMMA8451QState.i2cAddress;
+		I2C_DRV_MasterReceiveDataBlocking(
+								0 /* I2C peripheral instance */,
+								&slave,
+								cmdBuf,
+								1,
+								(uint8_t *)deviceMMA8451QState.i2cBuffer,
+								1,
+								gWarpI2cTimeoutMilliseconds);
+		SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n", deviceMMA8451QState.i2cAddress);
+	}
+
+
+
+	// Warp firmware
 	while (1)
 	{
 		/*
