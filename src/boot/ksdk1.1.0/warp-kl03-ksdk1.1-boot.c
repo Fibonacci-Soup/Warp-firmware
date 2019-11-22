@@ -83,6 +83,8 @@
 #	include "devMMA8451Q.h"
 #endif
 
+#include "devINA219.h"
+
 #define WARP_BUILD_ENABLE_SEGGER_RTT_PRINTF
 //#define WARP_BUILD_BOOT_TO_CSVSTREAM
 
@@ -215,6 +217,7 @@ void					powerupAllSensors(void);
 uint8_t					readHexByte(void);
 int					read4digits(void);
 void					printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag, int menuDelayBetweenEachRun, int i2cPullupValue);
+
 
 
 /*
@@ -1239,7 +1242,8 @@ main(void)
 
 #ifdef WARP_BUILD_ENABLE_DEVMMA8451Q
 	initMMA8451Q(	0x1D	/* i2cAddress */,	&deviceMMA8451QState	);
-#endif	
+#endif
+	initINA219(	0x40	/* i2cAddress */,	&deviceINA219State	);
 
 #ifdef WARP_BUILD_ENABLE_DEVLPS25H
 	initLPS25H(	0x5C	/* i2cAddress */,	&deviceLPS25HState	);
@@ -1346,29 +1350,22 @@ main(void)
     devSSD1331init();
 
     // Measure Current
-    SEGGER_RTT_WriteString(0, "\n\n\n\r Starting to measure current using INA219\n");
-    deviceINA219State.i2cAddress = 0x40;
-    uint8_t cmdBuf[1] = {0xFF};
-	i2c_device_t slave =
-	{
-		.address = deviceMMA8451QState.i2cAddress,
-		.baudRate_kbps = gWarpI2cBaudRateKbps
-	};
-
-	while (1)
-	{
-		cmdBuf[0] = deviceMMA8451QState.i2cAddress;
-		I2C_DRV_MasterReceiveDataBlocking(
-								0 /* I2C peripheral instance */,
-								&slave,
-								cmdBuf,
-								1,
-								(uint8_t *)deviceMMA8451QState.i2cBuffer,
-								1,
-								gWarpI2cTimeoutMilliseconds);
-		SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n", deviceMMA8451QState.i2cAddress);
-	}
-
+    loopForSensor(	"\r\nINA219:\n\r",		/*	tagString			*/
+					&readSensorRegisterINA219,	/*	readSensorRegisterFunction	*/
+					&deviceINA219State,		/*	i2cDeviceState			*/
+					NULL,				/*	spiDeviceState			*/
+					0x00,			/*	baseAddress			*/
+					0x01,				/*	minAddress			*/
+					0x04,				/*	maxAddress			*/
+					0,		/*	repetitionsPerAddress		*/
+					1,		/*	chunkReadsPerAddress		*/
+					0,			/*	spinDelay			*/
+					1,			/*	autoIncrement			*/
+					0,		/*	sssupplyMillivolts		*/
+					0,			/*	referenceByte			*/
+					0,	/*	adaptiveSssupplyMaxMillivolts	*/
+					1				/*	chatty				*/
+					);
 
 
 	// Warp firmware
