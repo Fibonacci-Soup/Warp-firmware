@@ -1072,7 +1072,7 @@ void loopForINA219(	const char *  tagString,
 		{
 			for (int i = 0; i < readCount; i++) for (int j = 0; j < chunkReadsPerAddress; j++)
 			{
-				status = readSensorRegisterFunction(address+j, 1 /* numberOfBytes */);
+				status = readSensorRegisterFunction(address+j, 2 /* numberOfBytes */);
 				if (status == kWarpStatusOK)
 				{
 					nSuccesses++;
