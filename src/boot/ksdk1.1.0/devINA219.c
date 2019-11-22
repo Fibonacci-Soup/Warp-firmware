@@ -67,7 +67,6 @@ writeSensorRegisterINA219(uint8_t deviceRegister, uint16_t value)
 WarpStatus
 readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 {
-	SEGGER_RTT_WriteString(0, "\rreadSensorRegisterINA219 function start\n");
 	uint8_t		cmdBuf[1] = {0xFF};
 	i2c_status_t	status;
 	USED(numberOfBytes);
@@ -88,15 +87,8 @@ readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 							(uint8_t *)deviceINA219State.i2cBuffer,
 							2,
 							500);
-
-	if (status == kStatus_I2C_Success)
+	if (status != kStatus_I2C_Success)
 	{
-		SEGGER_RTT_printf(0, "\rRegister: 0x%02x --> Value:	[0x%02x,0x%02x]\n", cmdBuf[0], deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
-	}
-	else
-	{
-		SEGGER_RTT_WriteString(0, "\rRead of INA219 register failed.\n");
-
 		return kWarpStatusDeviceCommunicationFailed;
 	}
 
