@@ -1089,7 +1089,10 @@ void loopForINA219(	const char *  tagString,
 				}
 				else if (status == kWarpStatusDeviceCommunicationFailed)
 				{
-					SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n",	address+j);
+#ifdef WARP_BUILD_ENABLE_SEGGER_RTT_PRINTF
+					SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n",
+						address+j);
+#endif
 
 					nFailures++;
 					if (actualSssupplyMillivolts < adaptiveSssupplyMaxMillivolts)
@@ -1127,8 +1130,16 @@ void loopForINA219(	const char *  tagString,
 		address = 0x00;
 	}
 
+	/*
+	 *	We intersperse RTT_printfs with forced delays to allow us to use small
+	 *	print buffers even in RUN mode.
+	 */
+#ifdef WARP_BUILD_ENABLE_SEGGER_RTT_PRINTF
 	SEGGER_RTT_printf(0, "\r\n\t%d/%d success rate.\n", nSuccesses, (nSuccesses + nFailures));
+	OSA_TimeDelay(50);
 	SEGGER_RTT_printf(0, "\r\t%d bad commands.\n\n", nBadCommands);
+	OSA_TimeDelay(50);
+#endif
 
 	return;
 }
