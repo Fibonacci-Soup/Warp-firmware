@@ -1128,7 +1128,7 @@ void loopForINA219(	const char *  tagString,
 	}
 
 
-	// warpSetLowPowerMode(kWarpPowerModeVLPR, 0);
+	warpSetLowPowerMode(kWarpPowerModeVLPR, 0);
 
 	SEGGER_RTT_printf(0, "\r\n\t%d/%d success rate.\n", nSuccesses, (nSuccesses + nFailures));
 	SEGGER_RTT_printf(0, "\r\t%d bad commands.\n\n", nBadCommands);
