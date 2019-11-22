@@ -23,16 +23,18 @@ extern volatile uint32_t		gWarpI2cBaudRateKbps;
 void
 initINA219(const uint8_t i2cAddress, WarpI2CDeviceState volatile *  deviceStatePointer)
 {
+	SEGGER_RTT_WriteString(0, "\rinitINA219 function start\n");
 	deviceStatePointer->i2cAddress	= i2cAddress;
 
 	return;
 }
 
 WarpStatus
-readSensorRegisterINA219(uint8_t deviceRegister)
+readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 {
-	uint8_t cmdBuf[1]	= {0xFF};
-	i2c_status_t		status;
+	SEGGER_RTT_WriteString(0, "\rreadSensorRegisterINA219 function start\n");
+	uint8_t		cmdBuf[1] = {0xFF};
+	i2c_status_t	status;
 
 	i2c_device_t slave =
 	{
@@ -48,7 +50,7 @@ readSensorRegisterINA219(uint8_t deviceRegister)
 							cmdBuf,
 							1,
 							(uint8_t *)deviceINA219State.i2cBuffer,
-							2,
+							numberOfBytes,
 							500 /* timeout in milliseconds */);
 
 	if (status == kStatus_I2C_Success)

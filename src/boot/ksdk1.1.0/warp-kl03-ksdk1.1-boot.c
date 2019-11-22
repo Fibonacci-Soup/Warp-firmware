@@ -1361,12 +1361,11 @@ main(void)
 					1,		/*	chunkReadsPerAddress		*/
 					0,			/*	spinDelay			*/
 					1,			/*	autoIncrement			*/
-					0,		/*	sssupplyMillivolts		*/
+					1800,		/*	sssupplyMillivolts		*/
 					0,			/*	referenceByte			*/
-					0,	/*	adaptiveSssupplyMaxMillivolts	*/
+					2000,	/*	adaptiveSssupplyMaxMillivolts	*/
 					1				/*	chatty				*/
 					);
-
 
 	// Warp firmware
 	while (1)
