@@ -1016,6 +1016,108 @@ checkSum(uint8_t *  pointer, uint16_t length) /*	Adapted from https://stackoverf
 }
 #endif
 
+
+/* Modified function of loopForSensor for INA219 only */
+void loopForINA219(	const char *  tagString,
+		WarpStatus  (* readSensorRegisterFunction)(uint8_t deviceRegister),
+		volatile WarpI2CDeviceState *  i2cDeviceState,
+		volatile WarpSPIDeviceState *  spiDeviceState,
+		uint8_t  baseAddress,
+		uint8_t  minAddress,
+		uint8_t  maxAddress,
+		int  repetitionsPerAddress,
+		int  chunkReadsPerAddress,
+		int  spinDelay,
+		bool  autoIncrement,
+		uint16_t  sssupplyMillivolts,
+		uint8_t  referenceByte,
+		uint16_t adaptiveSssupplyMaxMillivolts,
+		bool  chatty
+		)
+{
+	WarpStatus		status;
+	uint8_t			address = 0x00;
+	int			readCount = repetitionsPerAddress + 1;
+	int			nSuccesses = 0;
+	int			nFailures = 0;
+	int			nCorrects = 0;
+	int			nBadCommands = 0;
+	uint16_t		actualSssupplyMillivolts = sssupplyMillivolts;
+
+	enableSssupply(actualSssupplyMillivolts);
+	OSA_TimeDelay(100);
+
+	SEGGER_RTT_WriteString(0, tagString);
+
+	SEGGER_RTT_WriteString(0, "\rINA219 calibration start\n");
+	uint16_t calValue = 4096;
+	writeSensorRegisterINA219(0x05, calValue);
+
+	SEGGER_RTT_WriteString(0, "\rINA219 sensor read start\n");
+	for (int i = 0; i < 1000; i++)
+	{
+		while ((address <= maxAddress) && autoIncrement)
+		{
+			for (int i = 0; i < readCount; i++) for (int j = 0; j < chunkReadsPerAddress; j++)
+			{
+				status = readSensorRegisterFunction(address+j);
+				if (status == kWarpStatusOK)
+				{
+					nSuccesses++;
+					if (actualSssupplyMillivolts > sssupplyMillivolts)
+					{
+						actualSssupplyMillivolts -= 100;
+						enableSssupply(actualSssupplyMillivolts);
+					}
+
+					/* Print current value in terminal. Divide by 10 to get mA */
+					if (address == 0x04) {
+						int val = ((i2cDeviceState->i2cBuffer[0] << 8) | i2cDeviceState->i2cBuffer[1]);
+
+						SEGGER_RTT_printf(0, "\r%d\n", val);
+					}
+					OSA_TimeDelay(10);
+				}
+				else if (status == kWarpStatusDeviceCommunicationFailed)
+				{
+					SEGGER_RTT_printf(0, "\r0x%02x --> ----\n",	address+j);
+
+					nFailures++;
+					if (actualSssupplyMillivolts < adaptiveSssupplyMaxMillivolts)
+					{
+						actualSssupplyMillivolts += 100;
+						enableSssupply(actualSssupplyMillivolts);
+					}
+				}
+				else if (status == kWarpStatusBadDeviceCommand)
+				{
+					nBadCommands++;
+				}
+
+				if (spinDelay > 0) OSA_TimeDelay(spinDelay);
+			}
+
+			if (autoIncrement)
+			{
+				address++;
+			}
+		}
+
+		address = 0x00;
+
+	}
+
+
+	warpSetLowPowerMode(kWarpPowerModeVLPR, 0 /* sleep seconds : irrelevant here */);
+
+	SEGGER_RTT_printf(0, "\r\n\t%d/%d success rate.\n", nSuccesses, (nSuccesses + nFailures));
+	SEGGER_RTT_printf(0, "\r\t%d bad commands.\n\n", nBadCommands);
+	SEGGER_RTT_printf(0, "\r\tVoltage trace:\n", nBadCommands);
+
+	return;
+}
+
+
 int
 main(void)
 {
@@ -1352,7 +1454,8 @@ main(void)
 
     // Measure Current
 	enableI2Cpins(menuI2cPullupValue);
-    loopForSensor(	"\r\nINA219:\n\r",		/*	tagString			*/
+
+    loopForINA219(	"\r\nINA219:\n\r",		/*	tagString			*/
 					&readSensorRegisterINA219,	/*	readSensorRegisterFunction	*/
 					&deviceINA219State,		/*	i2cDeviceState			*/
 					NULL,				/*	spiDeviceState			*/
@@ -1368,6 +1471,8 @@ main(void)
 					2000,	/*	adaptiveSssupplyMaxMillivolts	*/
 					1				/*	chatty				*/
 					);
+
+
 
 	// Warp firmware
 	while (1)
