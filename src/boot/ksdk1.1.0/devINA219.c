@@ -35,6 +35,7 @@ readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 	SEGGER_RTT_WriteString(0, "\rreadSensorRegisterINA219 function start\n");
 	uint8_t		cmdBuf[1] = {0xFF};
 	i2c_status_t	status;
+	USED(numberOfBytes);
 
 	i2c_device_t slave =
 	{
@@ -50,7 +51,7 @@ readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 							cmdBuf,
 							1,
 							(uint8_t *)deviceINA219State.i2cBuffer,
-							numberOfBytes,
+							2,
 							500 /* timeout in milliseconds */);
 
 	if (status == kStatus_I2C_Success)
