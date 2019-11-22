@@ -1019,7 +1019,7 @@ checkSum(uint8_t *  pointer, uint16_t length) /*	Adapted from https://stackoverf
 
 /* Modified function of loopForSensor for INA219 only */
 void loopForINA219(	const char *  tagString,
-		WarpStatus  (* readSensorRegisterFunction)(uint8_t deviceRegister),
+		WarpStatus  (* readSensorRegisterFunction)(uint8_t deviceRegister, int numberOfBytes),
 		volatile WarpI2CDeviceState *  i2cDeviceState,
 		volatile WarpSPIDeviceState *  spiDeviceState,
 		uint8_t  baseAddress,
