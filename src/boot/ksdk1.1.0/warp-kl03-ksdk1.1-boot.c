@@ -1348,8 +1348,10 @@ main(void)
 
     // Turn on OLED
     devSSD1331init();
+    OSA_TimeDelay(1000);
 
     // Measure Current
+	enableI2Cpins(menuI2cPullupValue);
     loopForSensor(	"\r\nINA219:\n\r",		/*	tagString			*/
 					&readSensorRegisterINA219,	/*	readSensorRegisterFunction	*/
 					&deviceINA219State,		/*	i2cDeviceState			*/
