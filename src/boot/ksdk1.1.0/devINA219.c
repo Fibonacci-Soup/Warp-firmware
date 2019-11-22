@@ -29,6 +29,72 @@ initINA219(const uint8_t i2cAddress, WarpI2CDeviceState volatile *  deviceStateP
 	return;
 }
 
+
+WarpStatus
+writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload, uint16_t menuI2cPullupValue)
+{
+	uint8_t		payloadByte[1], commandByte[1];
+	i2c_status_t	status;
+
+	i2c_device_t slave =
+	{
+		.address = deviceMMA8451QState.i2cAddress,
+		.baudRate_kbps = gWarpI2cBaudRateKbps
+	};
+
+	commandByte[0] = deviceRegister;
+	payloadByte[0] = payload;
+	status = I2C_DRV_MasterSendDataBlocking(
+							0 /* I2C instance */,
+							&slave,
+							commandByte,
+							1,
+							payloadByte,
+							1,
+							gWarpI2cTimeoutMilliseconds);
+	if (status != kStatus_I2C_Success)
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+
+	return kWarpStatusOK;
+}
+
+WarpStatus
+writeSensorRegisterINA219(uint8_t deviceRegister, uint16_t value)
+{
+	uint8_t highBits = val >> 8;
+	uint8_t lowBits = val & 0xFF;
+	uint8_t payloadByte[2] = {highBits, lowBits};
+	uint8_t commandByte[1]	= {0xFF};
+	i2c_status_t	status;
+
+	i2c_device_t slave =
+	{
+		.address = deviceINA219State.i2cAddress,
+		.baudRate_kbps = gWarpI2cBaudRateKbps
+	};
+
+	commandByte[0] = deviceRegister;
+
+	status = I2C_DRV_MasterSendDataBlocking(
+						0,
+						&slave,
+						commandByte,
+						1,
+						payloadByte,
+						2,
+						100);
+	if (status != kStatus_I2C_Success)
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+
+	return kWarpStatusOK;
+}
+
+
+
 WarpStatus
 readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 {
@@ -46,13 +112,13 @@ readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 	cmdBuf[0] = deviceRegister;
 
 	status = I2C_DRV_MasterReceiveDataBlocking(
-							0 /* I2C peripheral instance */,
+							0,
 							&slave,
 							cmdBuf,
 							1,
 							(uint8_t *)deviceINA219State.i2cBuffer,
 							2,
-							500 /* timeout in milliseconds */);
+							500);
 
 	if (status == kStatus_I2C_Success)
 	{
