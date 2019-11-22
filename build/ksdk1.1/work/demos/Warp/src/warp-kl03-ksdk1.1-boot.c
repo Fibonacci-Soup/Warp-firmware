@@ -1019,7 +1019,7 @@ checkSum(uint8_t *  pointer, uint16_t length) /*	Adapted from https://stackoverf
 
 /* Modified function of loopForSensor for INA219 only */
 void loopForINA219(	const char *  tagString,
-		WarpStatus  (* readSensorRegisterFunction)(uint8_t deviceRegister),
+		WarpStatus  (* readSensorRegisterFunction)(uint8_t deviceRegister, int numberOfBytes),
 		volatile WarpI2CDeviceState *  i2cDeviceState,
 		volatile WarpSPIDeviceState *  spiDeviceState,
 		uint8_t  baseAddress,
@@ -1036,7 +1036,7 @@ void loopForINA219(	const char *  tagString,
 		)
 {
 	WarpStatus		status;
-	uint8_t			address = 0x00;
+	uint8_t			address = min(minAddress, baseAddress);
 	int			readCount = repetitionsPerAddress + 1;
 	int			nSuccesses = 0;
 	int			nFailures = 0;
@@ -1044,23 +1044,35 @@ void loopForINA219(	const char *  tagString,
 	int			nBadCommands = 0;
 	uint16_t		actualSssupplyMillivolts = sssupplyMillivolts;
 
+
+	if (	(!spiDeviceState && !i2cDeviceState) ||
+		(spiDeviceState && i2cDeviceState) )
+	{
+#ifdef WARP_BUILD_ENABLE_SEGGER_RTT_PRINTF
+		SEGGER_RTT_printf(0, RTT_CTRL_RESET RTT_CTRL_BG_BRIGHT_YELLOW RTT_CTRL_TEXT_BRIGHT_WHITE kWarpConstantStringErrorSanity RTT_CTRL_RESET "\n");
+#endif
+	}
+
 	enableSssupply(actualSssupplyMillivolts);
 	OSA_TimeDelay(100);
 
 	SEGGER_RTT_WriteString(0, tagString);
 
 	SEGGER_RTT_WriteString(0, "\rINA219 calibration start\n");
-	uint16_t calValue = 4096;
-	writeSensorRegisterINA219(0x05, calValue);
+	writeSensorRegisterINA219(0x05, 4096);
 
 	SEGGER_RTT_WriteString(0, "\rINA219 sensor read start\n");
 	for (int i = 0; i < 1000; i++)
 	{
-		while ((address <= maxAddress) && autoIncrement)
+		/*
+		 *	Keep on repeating until we are above the maxAddress, or just once if not autoIncrement-ing
+		 *	This is checked for at the tail end of the loop.
+		 */
+		while (true)
 		{
 			for (int i = 0; i < readCount; i++) for (int j = 0; j < chunkReadsPerAddress; j++)
 			{
-				status = readSensorRegisterFunction(address+j);
+				status = readSensorRegisterFunction(address+j, 1 /* numberOfBytes */);
 				if (status == kWarpStatusOK)
 				{
 					nSuccesses++;
@@ -1069,18 +1081,15 @@ void loopForINA219(	const char *  tagString,
 						actualSssupplyMillivolts -= 100;
 						enableSssupply(actualSssupplyMillivolts);
 					}
-
-					/* Print current value in terminal. Divide by 10 to get mA */
 					if (address == 0x04) {
 						int val = ((i2cDeviceState->i2cBuffer[0] << 8) | i2cDeviceState->i2cBuffer[1]);
-
-						SEGGER_RTT_printf(0, "\r%d\n", val);
+						SEGGER_RTT_printf(0, "\r\t0x%02x --> %d\n", address+j, val);
 					}
 					OSA_TimeDelay(10);
 				}
 				else if (status == kWarpStatusDeviceCommunicationFailed)
 				{
-					SEGGER_RTT_printf(0, "\r0x%02x --> ----\n",	address+j);
+					SEGGER_RTT_printf(0, "\r\t0x%02x --> ----\n",	address+j);
 
 					nFailures++;
 					if (actualSssupplyMillivolts < adaptiveSssupplyMaxMillivolts)
@@ -1094,25 +1103,35 @@ void loopForINA219(	const char *  tagString,
 					nBadCommands++;
 				}
 
-				if (spinDelay > 0) OSA_TimeDelay(spinDelay);
+				if (spinDelay > 0)
+				{
+					OSA_TimeDelay(spinDelay);
+				}
 			}
 
 			if (autoIncrement)
 			{
 				address++;
 			}
+
+			if (address > maxAddress || !autoIncrement)
+			{
+				/*
+				 *	We either iterated over all possible addresses, or were asked to do only
+				 *	one address anyway (i.e. don't increment), so we're done.
+				 */
+				break;
+			}
 		}
 
 		address = 0x00;
-
 	}
 
 
-	warpSetLowPowerMode(kWarpPowerModeVLPR, 0 /* sleep seconds : irrelevant here */);
+	// warpSetLowPowerMode(kWarpPowerModeVLPR, 0);
 
 	SEGGER_RTT_printf(0, "\r\n\t%d/%d success rate.\n", nSuccesses, (nSuccesses + nFailures));
 	SEGGER_RTT_printf(0, "\r\t%d bad commands.\n\n", nBadCommands);
-	SEGGER_RTT_printf(0, "\r\tVoltage trace:\n", nBadCommands);
 
 	return;
 }
