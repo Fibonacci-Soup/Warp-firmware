@@ -307,18 +307,23 @@ startFreefallDetectionMMA8451Q(uint16_t menuI2cPullupValue){
 	WarpStatus i2cCommStatus;
 	uint8_t temp_data_read;
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x00, menuI2cPullupValue); //Set the device in 50 Hz ODR, Standby
+	SEGGER_RTT_printf(0, "WTF1");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x15, 0xB8, menuI2cPullupValue); //Configuration Register set for Freefall Detection enabling ¡°AND¡± condition, OAE = 0, Enabling X, Y, Z and the Latch
+	SEGGER_RTT_printf(0, "WTF2");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x17, 0x03, menuI2cPullupValue); //Threshold Setting Value for the resulting acceleration (The step count is 0.063g/count)
+	SEGGER_RTT_printf(0, "WTF3");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x18, 0x06, menuI2cPullupValue); //Set the debounce counter to eliminate false positive readings for 50Hz sample rate
+	SEGGER_RTT_printf(0, "WTF4");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2D, 0x04, menuI2cPullupValue);
+	SEGGER_RTT_printf(0, "WTF5");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2E, 0x00, menuI2cPullupValue);
-
-//	readSensorRegisterMMA8451Q(0x2A, 1);
-//	uint8_t CTRL_REG1_Data = deviceMMA8451QState.i2cBuffer[0];
-//	CTRL_REG1_Data |= 0x01;
+	SEGGER_RTT_printf(0, "WTF6");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x01, menuI2cPullupValue); //Put the device in Active Mode
+	SEGGER_RTT_printf(0, "WTF7");
 	while (1){
+		SEGGER_RTT_printf(0, "WTF8");
 		readSensorRegisterMMA8451Q(0x16, 1);
+		SEGGER_RTT_printf(0, "WTF9");
 		temp_data_read = deviceMMA8451QState.i2cBuffer[0];
 		SEGGER_RTT_printf(0, "%d", temp_data_read);
 		temp_data_read &= 0x80;
