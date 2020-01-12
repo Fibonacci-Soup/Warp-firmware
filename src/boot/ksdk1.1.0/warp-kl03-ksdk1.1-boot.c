@@ -1345,6 +1345,8 @@ main(void)
 	 */
 #endif
 
+	enableSssupply(3000);
+	enableI2Cpins(menuI2cPullupValue);
 	startFreefallDetectionMMA8451Q();
     // Turn on OLED
     devSSD1331init();
