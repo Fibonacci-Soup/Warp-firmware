@@ -306,7 +306,7 @@ startFreefallDetectionMMA8451Q(uint16_t menuI2cPullupValue){
 	WarpStatus i2cCommStatus;
 	uint8_t temp_data_read;
 	SEGGER_RTT_printf(0, "Start detecting fall");
-	writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QF_SETUP, 0x00, menuI2cPullupValue);
+	//writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QF_SETUP, 0x00, menuI2cPullupValue);
 	SEGGER_RTT_printf(0, "WTF0");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x00, menuI2cPullupValue); //Set the device in 50 Hz ODR, Standby
 	SEGGER_RTT_printf(0, "WTF1");
