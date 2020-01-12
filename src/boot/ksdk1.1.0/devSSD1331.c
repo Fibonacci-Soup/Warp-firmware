@@ -166,11 +166,11 @@ devSSD1331init(void)
     writeCommand(0x5F); // Column Address of End
     writeCommand(0x3F); // Row Address of End
     writeCommand(0x00); // Color C of the line
-    writeCommand(0xFF); // Color B of the line
-    writeCommand(0x00); // Color A of the line
+    writeCommand(0x00); // Color B of the line
+    writeCommand(0xFF); // Color A of the line
     writeCommand(0x00); // Color C of the fill area
-    writeCommand(0xFF); // Color B of the fill area
-    writeCommand(0x00); // Color A of the fill area
+    writeCommand(0x00); // Color B of the fill area
+    writeCommand(0xFF); // Color A of the fill area
 
 
 
