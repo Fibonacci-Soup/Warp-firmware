@@ -313,13 +313,11 @@ startFreefallDetectionMMA8451Q(uint16_t menuI2cPullupValue){
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2D, 0x04, menuI2cPullupValue);
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2E, 0x00, menuI2cPullupValue);
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x01, menuI2cPullupValue); //Put the device in Active Mode
-	SEGGER_RTT_printf(0, "WTF7");
 	while (1){
 		readSensorRegisterMMA8451Q(0x16, 1);
 		temp_data_read = deviceMMA8451QState.i2cBuffer[0];
-		SEGGER_RTT_printf(0, "%x\n", temp_data_read);
 		if (temp_data_read > 0x7F){
-			SEGGER_RTT_printf(0, "Fall detected!!!");
+			SEGGER_RTT_printf(0, "Fall detected: 0x%x!!!", temp_data_read);
 			break;
 		}
 		OSA_TimeDelay(100);
