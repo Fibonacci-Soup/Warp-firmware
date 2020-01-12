@@ -5,7 +5,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp-kl03-ksdk1.1-powermodes.c.obj"
   "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devBMX055.c.obj"
   "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj"
-  "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.obj"
   "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj"
   "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.obj"
   "CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.c.obj"

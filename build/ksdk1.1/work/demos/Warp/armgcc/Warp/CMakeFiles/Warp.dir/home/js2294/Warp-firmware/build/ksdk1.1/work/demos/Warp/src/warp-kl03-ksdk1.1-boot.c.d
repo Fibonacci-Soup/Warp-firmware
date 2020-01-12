@@ -41,7 +41,7 @@ CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/
  /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT.h \
  /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT_Conf.h \
  /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp.h \
- /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.h
+ /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h
 
 /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/armgcc/Warp/../../../../platform/utilities/inc/fsl_misc_utilities.h:
 
@@ -125,4 +125,4 @@ CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/
 
 /home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/warp.h:
 
-/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.h:
+/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h:

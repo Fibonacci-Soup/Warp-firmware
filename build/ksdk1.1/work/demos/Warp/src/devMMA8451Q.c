@@ -300,3 +300,31 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 		}
 	}
 }
+
+WarpStatus
+startFreefallDetectionMMA8451Q(uint16_t menuI2cPullupValue){
+	SEGGER_RTT_printf(0, "Start detecting fall");
+	WarpStatus i2cCommStatus;
+	uint8_t temp_data_read;
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x00, menuI2cPullupValue); //Set the device in 50 Hz ODR, Standby
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x15, 0xB8, menuI2cPullupValue); //Configuration Register set for Freefall Detection enabling ¡°AND¡± condition, OAE = 0, Enabling X, Y, Z and the Latch
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x17, 0x03, menuI2cPullupValue); //Threshold Setting Value for the resulting acceleration (The step count is 0.063g/count)
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x18, 0x06, menuI2cPullupValue); //Set the debounce counter to eliminate false positive readings for 50Hz sample rate
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2D, 0x04, menuI2cPullupValue);
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2E, 0x00, menuI2cPullupValue);
+
+//	readSensorRegisterMMA8451Q(0x2A, 1);
+//	uint8_t CTRL_REG1_Data = deviceMMA8451QState.i2cBuffer[0];
+//	CTRL_REG1_Data |= 0x01;
+	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x01, menuI2cPullupValue); //Put the device in Active Mode
+	while (1){
+		readSensorRegisterMMA8451Q(0x16, 1);
+		temp_data_read = deviceMMA8451QState.i2cBuffer[0];
+		temp_data_read &= 0x80;
+		if (temp_data_read == 0x80){
+			SEGGER_RTT_printf(0, "Fall detected!!!");
+			break;
+		}
+	}
+	return i2cCommStatus;
+}

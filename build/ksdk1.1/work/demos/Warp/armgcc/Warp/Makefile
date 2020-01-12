@@ -339,33 +339,6 @@ home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s
 .PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s
 
-home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.obj: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.obj
-
-.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.obj
-
-# target to build an object file
-home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.obj
-.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.obj
-
-home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.i: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.i
-
-.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.i
-
-# target to preprocess a source file
-home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.i
-.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.i
-
-home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.s: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.s
-
-.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.s
-
-# target to generate assembly for a file
-home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.s
-.PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.c.s
-
 home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.obj: home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.c.obj
 
 .PHONY : home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.obj
@@ -705,9 +678,6 @@ help:
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.obj"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.i"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.s"
-	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.obj"
-	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.i"
-	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devINA219.s"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.obj"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.i"
 	@echo "... home/js2294/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.s"
