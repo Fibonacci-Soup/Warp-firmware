@@ -1350,7 +1350,7 @@ main(void)
 	// Turn on OLED
 	devSSD1331init();
 	OSA_TimeDelay(1000);
-	startFreefallDetectionMMA8451Q();
+	startFreefallDetectionMMA8451Q(menuI2cPullupValue);
 	devSSD1331TurnRed();
 	OSA_TimeDelay(10000);
 
