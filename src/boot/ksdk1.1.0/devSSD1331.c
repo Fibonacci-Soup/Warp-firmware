@@ -165,18 +165,56 @@ devSSD1331init(void)
     writeCommand(0x00); // Row Address of Start
     writeCommand(0x5F); // Column Address of End
     writeCommand(0x3F); // Row Address of End
-    writeCommand(0xFF); // Color C of the line
-    writeCommand(0x00); // Color B of the line
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
     writeCommand(0x00); // Color A of the line
-    writeCommand(0xFF); // Color C of the fill area
-    writeCommand(0x00); // Color B of the fill area
+    writeCommand(0x00); // Color C of the fill area
+    writeCommand(0xFF); // Color B of the fill area
     writeCommand(0x00); // Color A of the fill area
 
 
 
-	SEGGER_RTT_WriteString(0, "\r\n\tDone with draw rectangle...\n");
+	SEGGER_RTT_WriteString(0, "\r\n\tDone with showing green...\n");
 
 
 
 	return 0;
 }
+
+int
+devSSD1331TurnRed(void)
+{
+	/*
+	 *	Clear Screen
+	 */
+	writeCommand(kSSD1331CommandCLEAR);
+	writeCommand(0x00);
+	writeCommand(0x00);
+	writeCommand(0x5F);
+	writeCommand(0x3F);
+	// SEGGER_RTT_WriteString(0, "\r\n\tDone with screen clear...\n");
+
+
+
+	/*
+	 *	Read the manual for the SSD1331 (SSD1331_1.2.pdf) to figure
+	 *	out how to fill the entire screen with the brightest shade
+	 *	of green.
+	 */
+	writeCommand(kSSD1331CommandDRAWRECT);
+	writeCommand(0x00); // Column Address of Start
+	writeCommand(0x00); // Row Address of Start
+	writeCommand(0x5F); // Column Address of End
+	writeCommand(0x3F); // Row Address of End
+	writeCommand(0xFF); // Color C of the line
+	writeCommand(0x00); // Color B of the line
+	writeCommand(0x00); // Color A of the line
+	writeCommand(0xFF); // Color C of the fill area
+	writeCommand(0x00); // Color B of the fill area
+	writeCommand(0x00); // Color A of the fill area
+
+
+
+	SEGGER_RTT_WriteString(0, "\r\n\tDone with showing red...\n");
+}
+
