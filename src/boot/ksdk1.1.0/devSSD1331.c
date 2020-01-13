@@ -259,7 +259,7 @@ devSSD1331TurnRed(void)
 		writeCommand(0x00); // Color A of the fill area
 
 
-		OSA_TimeDelay(500);
+		OSA_TimeDelay(1000);
 
 
 		/*
@@ -289,17 +289,8 @@ devSSD1331TurnRed(void)
 		writeCommand(0x34);
 		writeCommand(0x38);
 
-		OSA_TimeDelay(500);
-
+		OSA_TimeDelay(1000);
 	}
-
-	while(1){
-		OSA_TimeDelay(500);
-		writeCommand(kSSD1331CommandINVERTDISPLAY);
-		OSA_TimeDelay(500);
-		writeCommand(kSSD1331CommandNORMALDISPLAY);
-	}
-
 	return 0;
 }
 
