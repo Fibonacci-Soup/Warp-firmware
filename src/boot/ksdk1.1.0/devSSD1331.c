@@ -214,7 +214,7 @@ devSSD1331init(void)
     writeCommand(0xFF); // Color B of the line
     writeCommand(0x00); // Color A of the line
 
-	SEGGER_RTT_WriteString(0, "\r\n\tDone with displaying tick\n");
+	SEGGER_RTT_WriteString(0, "\tDone with displaying tick\n");
 
 
 
@@ -224,53 +224,74 @@ devSSD1331init(void)
 int
 devSSD1331TurnRed(void)
 {
-	/*
-	 *	Clear Screen
-	 */
-	writeCommand(kSSD1331CommandCLEAR);
-	writeCommand(0x00);
-	writeCommand(0x00);
-	writeCommand(0x5F);
-	writeCommand(0x3F);
-	// SEGGER_RTT_WriteString(0, "\r\n\tDone with screen clear...\n");
+	while(1){
+		/*
+		 *	Draw red exclamation mark
+		 */
+		writeCommand(kSSD1331CommandCLEAR);
+		writeCommand(0x00);
+		writeCommand(0x00);
+		writeCommand(0x5F);
+		writeCommand(0x3F);
+
+		writeCommand(kSSD1331CommandDRAWRECT);
+		writeCommand(0x2C); // Column Address of Start (0 ~ 0x5F)
+		writeCommand(0x06); // Row Address of Start (0 ~ 0x3F)
+		writeCommand(0x34); // Column Address of End (0 ~ 0x5F)
+		writeCommand(0x28); // Row Address of End (0 ~ 0x3F)
+		writeCommand(0xFF); // Color C of the line
+		writeCommand(0x00); // Color B of the line
+		writeCommand(0x00); // Color A of the line
+		writeCommand(0xFF); // Color C of the fill area
+		writeCommand(0x00); // Color B of the fill area
+		writeCommand(0x00); // Color A of the fill area
+
+		writeCommand(kSSD1331CommandDRAWRECT);
+		writeCommand(0x2C); // Column Address of Start (0 ~ 0x5F)
+		writeCommand(0x30); // Row Address of Start (0 ~ 0x3F)
+		writeCommand(0x34); // Column Address of End (0 ~ 0x5F)
+		writeCommand(0x38); // Row Address of End (0 ~ 0x3F)
+		writeCommand(0xFF); // Color C of the line
+		writeCommand(0x00); // Color B of the line
+		writeCommand(0x00); // Color A of the line
+		writeCommand(0xFF); // Color C of the fill area
+		writeCommand(0x00); // Color B of the fill area
+		writeCommand(0x00); // Color A of the fill area
 
 
+		OSA_TimeDelay(500);
 
-	/*
-	 *	Read the manual for the SSD1331 (SSD1331_1.2.pdf) to figure
-	 *	out how to fill the entire screen with the brightest shade
-	 *	of green.
-	 */
-	writeCommand(kSSD1331CommandDRAWRECT);
-	writeCommand(0x2C); // Column Address of Start (0 ~ 0x5F)
-	writeCommand(0x06); // Row Address of Start (0 ~ 0x3F)
-	writeCommand(0x34); // Column Address of End (0 ~ 0x5F)
-	writeCommand(0x28); // Row Address of End (0 ~ 0x3F)
-	writeCommand(0xFF); // Color C of the line
-	writeCommand(0x00); // Color B of the line
-	writeCommand(0x00); // Color A of the line
-	writeCommand(0xFF); // Color C of the fill area
-	writeCommand(0x00); // Color B of the fill area
-	writeCommand(0x00); // Color A of the fill area
 
-	writeCommand(kSSD1331CommandDRAWRECT);
-	writeCommand(0x2C); // Column Address of Start (0 ~ 0x5F)
-	writeCommand(0x30); // Row Address of Start (0 ~ 0x3F)
-	writeCommand(0x34); // Column Address of End (0 ~ 0x5F)
-	writeCommand(0x38); // Row Address of End (0 ~ 0x3F)
-	writeCommand(0xFF); // Color C of the line
-	writeCommand(0x00); // Color B of the line
-	writeCommand(0x00); // Color A of the line
-	writeCommand(0xFF); // Color C of the fill area
-	writeCommand(0x00); // Color B of the fill area
-	writeCommand(0x00); // Color A of the fill area
+		/*
+		 * Draw the inverted red exclamation mark
+		 */
+		writeCommand(kSSD1331CommandDRAWRECT);
+		writeCommand(0x00); // Column Address of Start (0 ~ 0x5F)
+		writeCommand(0x00); // Row Address of Start (0 ~ 0x3F)
+		writeCommand(0x5F); // Column Address of End (0 ~ 0x5F)
+		writeCommand(0x3F); // Row Address of End (0 ~ 0x3F)
+		writeCommand(0xFF); // Color C of the line
+		writeCommand(0x00); // Color B of the line
+		writeCommand(0x00); // Color A of the line
+		writeCommand(0xFF); // Color C of the fill area
+		writeCommand(0x00); // Color B of the fill area
+		writeCommand(0x00); // Color A of the fill area
 
-	SEGGER_RTT_WriteString(0, "\r\n\tDone with displaying red exclamation mark\n");
+		writeCommand(kSSD1331CommandCLEAR);
+		writeCommand(0x2C);
+		writeCommand(0x06);
+		writeCommand(0x34);
+		writeCommand(0x28);
 
-	writeCommand(kSSD1331CommandCONTRASTA);
-	writeCommand(0x00);
-	writeCommand(kSSD1331CommandCONTRASTB);
-	writeCommand(0x00);
+		writeCommand(kSSD1331CommandCLEAR);
+		writeCommand(0x2C);
+		writeCommand(0x30);
+		writeCommand(0x34);
+		writeCommand(0x38);
+
+		OSA_TimeDelay(500);
+
+	}
 
 	while(1){
 		OSA_TimeDelay(500);
