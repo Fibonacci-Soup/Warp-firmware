@@ -1347,10 +1347,16 @@ main(void)
 
 	enableSssupply(3000);
 	enableI2Cpins(menuI2cPullupValue);
-	// Turn on OLED
+
+	// Display green tick on OLED
 	devSSD1331init();
-	OSA_TimeDelay(1000);
+
+	OSA_TimeDelay(500);
+
+	// Start fall detection
 	startFreefallDetectionMMA8451Q(menuI2cPullupValue);
+
+	// Display red exclamation mark
 	devSSD1331TurnRed();
 
 	return 0;
