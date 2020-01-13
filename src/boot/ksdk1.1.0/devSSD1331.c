@@ -267,10 +267,15 @@ devSSD1331TurnRed(void)
 
 	SEGGER_RTT_WriteString(0, "\r\n\tDone with displaying red exclamation mark\n");
 
+	writeCommand(kSSD1331CommandCONTRASTA);
+	writeCommand(0x00);
+	writeCommand(kSSD1331CommandCONTRASTB);
+	writeCommand(0x00);
+
 	while(1){
-		OSA_TimeDelay(1000);
+		OSA_TimeDelay(500);
 		writeCommand(kSSD1331CommandINVERTDISPLAY);
-		OSA_TimeDelay(1000);
+		OSA_TimeDelay(500);
 		writeCommand(kSSD1331CommandNORMALDISPLAY);
 	}
 
