@@ -127,12 +127,12 @@ devSSD1331init(void)
 	writeCommand(0x3E);
 	writeCommand(kSSD1331CommandMASTERCURRENT);	// 0x87
 	writeCommand(0x06);
-	writeCommand(kSSD1331CommandCONTRASTA);		// 0x81
-	writeCommand(0x91);
-	writeCommand(kSSD1331CommandCONTRASTB);		// 0x82
-	writeCommand(0x50);
-	writeCommand(kSSD1331CommandCONTRASTC);		// 0x83
-	writeCommand(0x7D);
+	writeCommand(kSSD1331CommandCONTRASTA);		// 0x91
+	writeCommand(0xFF);
+	writeCommand(kSSD1331CommandCONTRASTB);		// 0x50
+	writeCommand(0xFF);
+	writeCommand(kSSD1331CommandCONTRASTC);		// 0x7D
+	writeCommand(0xFF);
 	writeCommand(kSSD1331CommandDISPLAYON);		// Turn on oled panel
 	// SEGGER_RTT_WriteString(0, "\r\n\tDone with initialization sequence...\n");
 
@@ -160,21 +160,61 @@ devSSD1331init(void)
 	 *	out how to fill the entire screen with the brightest shade
 	 *	of green.
 	 */
-    writeCommand(kSSD1331CommandDRAWRECT);
-    writeCommand(0x00); // Column Address of Start
-    writeCommand(0x00); // Row Address of Start
-    writeCommand(0x5F); // Column Address of End
-    writeCommand(0x3F); // Row Address of End
+    writeCommand(kSSD1331CommandDRAWLINE);
+    writeCommand(0x19); // Column Address of Start (0 ~ 0x5F)
+    writeCommand(0x22); // Row Address of Start (0 ~ 0x3F)
+    writeCommand(0x28); // Column Address of End (0 ~ 0x5F)
+    writeCommand(0x36); // Row Address of End (0 ~ 0x3F)
     writeCommand(0x00); // Color C of the line
     writeCommand(0xFF); // Color B of the line
     writeCommand(0x00); // Color A of the line
-    writeCommand(0x00); // Color C of the fill area
-    writeCommand(0xFF); // Color B of the fill area
-    writeCommand(0x00); // Color A of the fill area
 
+    writeCommand(kSSD1331CommandDRAWLINE);
+    writeCommand(0x28); // Column Address of Start (0 ~ 0x5F)
+    writeCommand(0x36); // Row Address of Start (0 ~ 0x3F)
+    writeCommand(0x54); // Column Address of End (0 ~ 0x5F)
+    writeCommand(0x08); // Row Address of End (0 ~ 0x3F)
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
+    writeCommand(0x00); // Color A of the line
 
+    writeCommand(kSSD1331CommandDRAWLINE);
+    writeCommand(0x54); // Column Address of Start (0 ~ 0x5F)
+    writeCommand(0x08); // Row Address of Start (0 ~ 0x3F)
+    writeCommand(0x57); // Column Address of End (0 ~ 0x5F)
+    writeCommand(0x0B); // Row Address of End (0 ~ 0x3F)
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
+    writeCommand(0x00); // Color A of the line
 
-	SEGGER_RTT_WriteString(0, "\r\n\tDone with showing green...\n");
+    writeCommand(kSSD1331CommandDRAWLINE);
+    writeCommand(0x57); // Column Address of Start (0 ~ 0x5F)
+    writeCommand(0x0B); // Row Address of Start (0 ~ 0x3F)
+    writeCommand(0x28); // Column Address of End (0 ~ 0x5F)
+    writeCommand(0x3C); // Row Address of End (0 ~ 0x3F)
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
+    writeCommand(0x00); // Color A of the line
+
+    writeCommand(kSSD1331CommandDRAWLINE);
+    writeCommand(0x28); // Column Address of Start (0 ~ 0x5F)
+    writeCommand(0x3C); // Row Address of Start (0 ~ 0x3F)
+    writeCommand(0x16); // Column Address of End (0 ~ 0x5F)
+    writeCommand(0x24); // Row Address of End (0 ~ 0x3F)
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
+    writeCommand(0x00); // Color A of the line
+
+    writeCommand(kSSD1331CommandDRAWLINE);
+    writeCommand(0x16); // Column Address of Start (0 ~ 0x5F)
+    writeCommand(0x24); // Row Address of Start (0 ~ 0x3F)
+    writeCommand(0x19); // Column Address of End (0 ~ 0x5F)
+    writeCommand(0x22); // Row Address of End (0 ~ 0x3F)
+    writeCommand(0x00); // Color C of the line
+    writeCommand(0xFF); // Color B of the line
+    writeCommand(0x00); // Color A of the line
+
+	SEGGER_RTT_WriteString(0, "\r\n\tDone with displaying tick\n");
 
 
 
@@ -202,10 +242,10 @@ devSSD1331TurnRed(void)
 	 *	of green.
 	 */
 	writeCommand(kSSD1331CommandDRAWRECT);
-	writeCommand(0x00); // Column Address of Start
-	writeCommand(0x00); // Row Address of Start
-	writeCommand(0x5F); // Column Address of End
-	writeCommand(0x3F); // Row Address of End
+	writeCommand(0x2C); // Column Address of Start (0 ~ 0x5F)
+	writeCommand(0x06); // Row Address of Start (0 ~ 0x3F)
+	writeCommand(0x34); // Column Address of End (0 ~ 0x5F)
+	writeCommand(0x28); // Row Address of End (0 ~ 0x3F)
 	writeCommand(0xFF); // Color C of the line
 	writeCommand(0x00); // Color B of the line
 	writeCommand(0x00); // Color A of the line
@@ -213,8 +253,28 @@ devSSD1331TurnRed(void)
 	writeCommand(0x00); // Color B of the fill area
 	writeCommand(0x00); // Color A of the fill area
 
+	writeCommand(kSSD1331CommandDRAWRECT);
+	writeCommand(0x2C); // Column Address of Start (0 ~ 0x5F)
+	writeCommand(0x30); // Row Address of Start (0 ~ 0x3F)
+	writeCommand(0x34); // Column Address of End (0 ~ 0x5F)
+	writeCommand(0x38); // Row Address of End (0 ~ 0x3F)
+	writeCommand(0xFF); // Color C of the line
+	writeCommand(0x00); // Color B of the line
+	writeCommand(0x00); // Color A of the line
+	writeCommand(0xFF); // Color C of the fill area
+	writeCommand(0x00); // Color B of the fill area
+	writeCommand(0x00); // Color A of the fill area
 
+	SEGGER_RTT_WriteString(0, "\r\n\tDone with displaying red exclamation mark\n");
 
-	SEGGER_RTT_WriteString(0, "\r\n\tDone with showing red...\n");
+	while(1){
+		OSA_TimeDelay(1000);
+		writeCommand(kSSD1331CommandINVERTDISPLAY);
+		OSA_TimeDelay(1000);
+		writeCommand(kSSD1331CommandNORMALDISPLAY);
+	}
+
+	return 0;
 }
+
 
