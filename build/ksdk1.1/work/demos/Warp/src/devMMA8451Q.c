@@ -305,7 +305,7 @@ WarpStatus
 startFreefallDetectionMMA8451Q(uint16_t menuI2cPullupValue){
 	WarpStatus i2cCommStatus;
 	uint8_t temp_data_read;
-	SEGGER_RTT_printf(0, "Start detecting fall");
+	SEGGER_RTT_printf(0, "Start detecting fall...\n");
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x2A, 0x00, menuI2cPullupValue); //Set the device in 50 Hz ODR, Standby
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x15, 0xB8, menuI2cPullupValue); //Configuration Register set for Freefall Detection enabling ¡°AND¡± condition, OAE = 0, Enabling X, Y, Z and the Latch
 	i2cCommStatus = writeSensorRegisterMMA8451Q(0x17, 0x03, menuI2cPullupValue); //Threshold Setting Value for the resulting acceleration (The step count is 0.063g/count)
@@ -317,7 +317,7 @@ startFreefallDetectionMMA8451Q(uint16_t menuI2cPullupValue){
 		readSensorRegisterMMA8451Q(0x16, 1);
 		temp_data_read = deviceMMA8451QState.i2cBuffer[0];
 		if (temp_data_read > 0x7F){
-			SEGGER_RTT_printf(0, "Fall detected!! register 0x16 value is: 0x%x.", temp_data_read);
+			SEGGER_RTT_printf(0, "Fall detected!!!\n");
 			break;
 		}
 		OSA_TimeDelay(10);
