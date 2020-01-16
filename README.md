@@ -1,9 +1,41 @@
-# Baseline firmware for the [Warp](https://github.com/physical-computation/Warp-hardware) family of hardware platforms
+# 4B25 Final Project - Human Fall Detector
+Name: Jinze Sha  
+College: King's College  
+CRS ID: js2294 
+## Summary
+According to the [World Health Organization](https://www.who.int/news-room/fact-sheets/detail/falls): Falls are the second leading cause of accidental or unintentional injury deaths worldwide. People may not be able to call for help after falling. So a device was developed to detect human fall and raise a warning after a fall is detected, which can be cleared by pressing the button, after which the device enters back into fall detecting mode.  
+
+## Repository layout
+This project is based on the [Warp firmware](https://github.com/physical-computation/Warp-hardware), the modifications on code can be viewed at the bottom of 'Files changed' section in the [diff link](https://github.com/physical-computation/Warp-firmware/compare/master...Fibonacci-Soup:master), apologies for including compiled files in git, which is because I've been using git to transfer files from the remote server in the lab to my personal computer. The relevant changes for the final project are in the following list of files:
+
+	1. The core of the implementation:
+		src/boot/ksdk1.1.0/warp-kl03-ksdk1.1-boot.c
+		
+	2. Driver for the accelerometer sensor (freefall detection function):
+		src/boot/ksdk1.1.0/devMMA8451Q.c
+		src/boot/ksdk1.1.0/devMMA8451Q.h
+		
+	3. Driver for OLED display (status and warning displaying function):
+		src/boot/ksdk1.1.0/devSSD1331.c
+		src/boot/ksdk1.1.0/devSSD1331.h
+		
+	4. Miscellaneous changes (compilation, pin configuration)
+		src/boot/ksdk1.1.0/CMakeLists.txt
+		src/boot/ksdk1.1.0/gpio_pins.h
+		tools/scripts/jlink.commands
+
+
+
+
+
+# Warp firmware information
+
+## Baseline firmware for the [Warp](https://github.com/physical-computation/Warp-hardware) family of hardware platforms
 This is the firmware for the [Warp hardware](https://github.com/physical-computation/Warp-hardware) and its publicly available and unpublished derivatives. This firmware also runs on the Freescale/NXP FRDM KL03 evaluation board which we use for teaching at the University of Cambridge. When running on platforms other than Warp, only the sensors available in the corresponding hardware platform are accessible.
 
 **Prerequisites:** You need an arm cross-compiler such as `arm-none-eabi-gcc` installed as well as a working `cmake` (installed, e.g., via `apt-get` on Linux or via [MacPorts](https://www.macports.org) on macOS). You will also need an installed copy of the SEGGER [JLink commander](https://www.segger.com/downloads/jlink/), `JlinkExe`, which is available for Linux, macOS, and Windows (here are direct links for downloading it for [macOS](https://www.segger.com/downloads/jlink/JLink_MacOSX.pkg), and [Linux tgz 64-bit](https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz)).
 
-## 1.  Compiling the Warp firmware
+### 1.  Compiling the Warp firmware
 First, make sure the environment variable `ARMGCC_DIR` is set correctly (you can check whether this is set correctly, e.g., via `echo $ARMGCC_DIR`; if this is unfamiliar, see [here](http://homepages.uc.edu/~thomam/Intro_Unix_Text/Env_Vars.html) or [here](https://www2.cs.duke.edu/csl/docs/csh.html)). If your `arm-none-eabi-gcc` is in `/usr/local/bin/arm-none-eabi-gcc`, then you want to set  `ARMGCC_DIR` to `/usr/local`. If your shell is `tcsh`:
 
 	setenv ARMGCC_DIR <full path to the directory containing bin/arm-none-eabi-gcc>
@@ -29,101 +61,17 @@ In the other shell window, launch the JLink RTT client<sup>&nbsp;<a href="#Notes
 
 	JLinkRTTClient
 
-## 2. Using the Warp firmware on the FRDM KL03
+### 2. Using the Warp firmware on the FRDM KL03
 The SEGGER firmware allows you to use SEGGER’s JLink software to load your own firmware to the board, even without using their specialized JLink programming cables. You can find the SEGGER firmware at the SEGGER Page for [OpenSDA firmware](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/opensda-sda-v2/).
 
 
-## 3.  Editing the firmware
+### 3.  Editing the firmware
 The firmware is currently all in `src/boot/ksdk1.1.0/`, in particular, see `src/boot/ksdk1.1.0/warp-kl03-ksdk1.1-boot.c` and the per-sensor drivers in `src/boot/ksdk1.1.0/dev*.[c,h]`.
 
 The firmware builds on the Kinetis SDK. You can find more documentation on the Kinetis SDK in the document [doc/Kinetis SDK v.1.1 API Reference Manual.pdf](https://github.com/physical-computation/Warp-firmware/blob/master/doc/Kinetis%20SDK%20v.1.1%20API%20Reference%20Manual.pdf).
 
 The firmware is designed for the Warp hardware platform, but will also run on the Freeacale FRDM KL03 development board. In that case, the only driver which is relevant is the one for the MMA8451Q. For more details about the structure of the firmware, see [src/boot/ksdk1.1.0/README.md](src/boot/ksdk1.1.0/README.md).
 
-## 4.  Interacting with the boot menu
-When the firmware boots, you will be dropped into a menu with a rich set of commands. The Warp boot menu allows you to conduct most of the experiments you will likely need without modifying the firmware:
-````
-[ *				W	a	r	p	(rev. b)			* ]
-[  				      Cambridge / Physcomplab   				  ]
-
-	Supply=0mV,	Default Target Read Register=0x00
-	I2C=200kb/s,	SPI=200kb/s,	UART=1kb/s,	I2C Pull-Up=32768
-
-	SIM->SCGC6=0x20000001		RTC->SR=0x10		RTC->TSR=0x5687132B
-	MCG_C1=0x42			MCG_C2=0x00		MCG_S=0x06
-	MCG_SC=0x00			MCG_MC=0x00		OSC_CR=0x00
-	SMC_PMPROT=0x22			SMC_PMCTRL=0x40		SCB->SCR=0x00
-	PMC_REGSC=0x00			SIM_SCGC4=0xF0000030	RTC->TPR=0xEE9
-
-	0s in RTC Handler to-date,	0 Pmgr Errors
-Select:
-- 'a': set default sensor.
-- 'b': set I2C baud rate.
-- 'c': set SPI baud rate.
-- 'd': set UART baud rate.
-- 'e': set default register address.
-- 'f': write byte to sensor.
-- 'g': set default SSSUPPLY.
-- 'h': powerdown command to all sensors.
-- 'i': set pull-up enable value.
-- 'j': repeat read reg 0x00 on sensor #3.
-- 'k': sleep until reset.
-- 'l': send repeated byte on I2C.
-- 'm': send repeated byte on SPI.
-- 'n': enable SSSUPPLY.
-- 'o': disable SSSUPPLY.
-- 'p': switch to VLPR mode.
-- 'r': switch to RUN mode.
-- 's': power up all sensors.
-- 't': dump processor state.
-- 'u': set I2C address.
-- 'x': disable SWD and spin for 10 secs.
-- 'z': dump all sensors data.
-Enter selection> 
-````
-You can probe around the menu to figure out what to do. In brief, you will likely want:
-
-1. Menu item `b` to set the I2C baud rate.
-
-2. Menu item `r` to switch the processor from low-power mode (2MHz) to "run" mode (48MHz).
-
-3. Menu item `g` to set sensor supply voltage.
-
-4. Menu item `n` to turn on the voltage regulators.
-
-5. Menu item `z` to repeatedly read from all the sensors whose drivers are compiled into the build.
-
-*NOTE: In many cases, the menu expects you to type a fixed number of characters (e.g., 0000 or 0009 for zero and nine)<sup>&nbsp;<a href="#Notes">See note 1 below</a></sup>. If using the JLinkRTTClient, the menu interface eats your characters as you type them, and you should not hit RETURN after typing in text. On the other hand, if using `telnet` you have to hit return.*
-
-### Example 1: Dump all registers for a single sensor
-````
-Enter selection> j
-
-    Auto-increment from base address 0x01? ['0' | '1']> 0
-    Chunk reads per address (e.g., '1')> 1
-    Chatty? ['0' | '1']> 1
-    Inter-operation spin delay in milliseconds (e.g., '0000')> 0000
-    Repetitions per address (e.g., '0000')> 0000
-    Maximum voltage for adaptive supply (e.g., '0000')> 2500
-    Reference byte for comparisons (e.g., '3e')> 00
-````
-
-### Example 2: Stream data from all sensors
-This will perpetually stream data from the 90+ sensor dimensions at a rate of about 90-tuples per second. Use the following command sequence:
--	`b` (set the I2C baud rate to `0300` for 300 kb/s).
--	`r` (enable 48MHz "run" mode for the processor).
--	`g` (set sensor supply voltage to `3000` for 3000mV sensor supply voltage).
--	`n` (turn on the sensor supply regulators).
--	`z` (start to stream data from all sensors that can run at the chosen voltage and baud rate).
-
-## 5.  To update your fork
-From your local clone:
-
-	git remote add upstream https://github.com/physical-computation/Warp-firmware.git
-	git fetch upstream
-	git pull upstream master
-
-----
 
 ### If you use Warp in your research, please cite it as:
 Phillip Stanley-Marbell and Martin Rinard. “A Hardware Platform for Efficient Multi-Modal Sensing with Adaptive Approximation”. ArXiv e-prints (2018). arXiv:1804.09241.
