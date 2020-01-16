@@ -19,10 +19,11 @@ This project is based on the [Warp firmware](https://github.com/physical-computa
 		src/boot/ksdk1.1.0/devSSD1331.c
 		src/boot/ksdk1.1.0/devSSD1331.h
 		
-	4. Miscellaneous changes (compilation, pin configuration)
+	4. Miscellaneous changes (compilation, pin configuration etc.)
 		src/boot/ksdk1.1.0/CMakeLists.txt
 		src/boot/ksdk1.1.0/gpio_pins.h
 		tools/scripts/jlink.commands
+		js2294-coursework-5-original-resolution.pdf (full resolution report uploaded because Moodle only allows files under 5MB)
 
 
 
